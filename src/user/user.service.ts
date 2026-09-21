@@ -24,7 +24,7 @@ export class UserService {
       ) {
         throw new ConflictException('E-mail já cadrastado em outra conta');
       }
-
+      console.error(error)
       throw new InternalServerErrorException('Não foi possivel criar o usuario');
     }
   }
