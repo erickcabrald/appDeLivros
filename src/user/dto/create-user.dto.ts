@@ -4,7 +4,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
-  nome: string;
+  name: string;
 
   @IsNotEmpty()
   @IsEmail()
@@ -17,5 +17,5 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsDateString()
-  dataNascimeto: string;
+  data_nascimento: string;
 }
