@@ -11,6 +11,7 @@ export class UserPrismaRepository implements UserRepository {
     private readonly prisma: PrismaService,
   ) {}
 
+  // create user
   async createUser(data: CreateUserDto): Promise<void> {
     await this.prisma.user.create({
       data: {
@@ -25,6 +26,8 @@ export class UserPrismaRepository implements UserRepository {
   async getAllUser(): Promise<ResponseUserDto[]> {
     const users = await this.prisma.user.findMany();
 
+    // retornando os dados do usuario de acordo com o ResponseUserDto
+    // ultilizando o metodo map para retornar todos os usuarios
     return users.map((user) => ({
       id: user.id,
       name: user.name,
@@ -40,6 +43,7 @@ export class UserPrismaRepository implements UserRepository {
       },
     });
 
+    // verificando se o usuario existe
     if (!user) {
       return null;
     }
@@ -50,5 +54,13 @@ export class UserPrismaRepository implements UserRepository {
       email: user.email,
       data_nascimento: user.data_nascimento,
     };
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    await this.prisma.user.delete({
+      where: {
+        id
+      }
+    });
   }
 }
