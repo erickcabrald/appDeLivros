@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UserRepository } from './repository/user.repository.js';
@@ -39,5 +39,18 @@ export class UserService {
       throw new InternalServerErrorException('Não foi possivel buscar usuarios');
     }
 
+  }
+
+  async getById(id: string): Promise< ResponseUserDto | null> {
+    try {
+      const user = await this.userRepository.getById(id);
+      if (!user) {
+        throw new NotFoundException('usuário não existe');
+      }
+
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Não foi possivel buscar usuario');
+    }
   }
 }
