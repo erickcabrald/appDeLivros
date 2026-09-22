@@ -41,16 +41,25 @@ export class UserService {
 
   }
 
-  async getById(id: string): Promise< ResponseUserDto | null> {
-    try {
-      const user = await this.userRepository.getById(id);
-      if (!user) {
-        throw new NotFoundException('usuário não existe');
-      }
+ async getById(id: string): Promise<ResponseUserDto> {
+  try {
+    const user = await this.userRepository.getById(id);
 
-      return user;
-    } catch (error) {
-      throw new InternalServerErrorException('Não foi possivel buscar usuario');
+    if (!user) {
+      throw new NotFoundException('Usuário não existe');
     }
+
+    return user;
+  } catch (error) {
+    if (error instanceof NotFoundException) {
+      throw error;
+    }
+
+    console.error(error);
+
+    throw new InternalServerErrorException(
+      'Não foi possível buscar usuário',
+    );
   }
+}
 }
